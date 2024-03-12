@@ -9,3 +9,4 @@ itsdangerous
 Jinja2
 Markupsafe
 Werkzeug
+python==3.11.8
