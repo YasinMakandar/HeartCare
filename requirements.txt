@@ -4,3 +4,8 @@ matplotlib
 scikit-learn
 flask
 gunicorn
+click
+itsdangerous
+Jinja2
+Markupsafe
+Werkzeug
