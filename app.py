@@ -64,6 +64,7 @@ def login():
 #     return redirect()
     
 @app.route('/api', methods=['GET', 'POST'])
+@app.route('/api', methods=['GET', 'POST'])
 def predict():
     name = request.form['name']
     email= request.form['email']
@@ -105,8 +106,6 @@ def predict():
     input_data["number of major vessels (0-3) colored by flourosopy"]=ca
     input_data["Thal Type"]=thal
 
-
-
     if fgender=="Male":
         gender=1
     else:
@@ -119,18 +118,6 @@ def predict():
     else:
         thal=2
 
-    # if cp=="Typical Angina":
-    #     cp=0
-    # elif cp=="Atypical Angina":
-    #     cp=1
-    # elif cp=="Non-Anginal":
-    #     cp=2
-    # else:
-    #     cp=3
-    # if fbs=="Yes":
-    #     fbs=1
-    # else:
-    #     fbs=0
     if restecg=="Normal":
         restecg=0
     elif restecg=="STT Abnormality":
@@ -141,34 +128,7 @@ def predict():
         exang=1
     else:
         exang=0
-    #  print("The email address is '" + age + "|"+sex+"|"+cp+"|"+trestbps+"|"+chol+"|"+fbs+"|"+restecg)
-    # Get the data from the POST request.
 
-    # print("all models=",all_models)
-    # print("Data recived", age, gender, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak,thal,0,0)
-    # Iterate over models and print specific information
-for model in all_models:
-    if isinstance(model, RandomForestClassifier):
-        print("Random Forest Classifier:")
-        print("Number of trees:", model.n_estimators)
-        # Add more information specific to RandomForestClassifier if needed
-    elif isinstance(model, LogisticRegression):
-        print("Logistic Regression:")
-        print("Coefficients:", model.coef_)
-        # Add more information specific to LogisticRegression if needed
-    elif isinstance(model, DecisionTreeClassifier):
-        print("Decision Tree Classifier:")
-        # Example: Print the maximum depth of the decision tree
-        print("Maximum depth:", model.tree_.max_depth)
-        # Add more information specific to DecisionTreeClassifier if needed
-    elif isinstance(model, SVC):
-        print("Support Vector Classifier:")
-        print("Kernel:", model.kernel)
-        # Add more information specific to SVC if needed
-    elif isinstance(model, KNeighborsClassifier):
-        print("K Nearest Neighbors Classifier:")
-        print("Number of neighbors:", model.n_neighbors)
-        # Add more information specific to KNeighborsClassifier if needed
     age=int(age)
     cp=int(cp)
     trestbps=int(trestbps)
@@ -179,54 +139,28 @@ for model in all_models:
     slope=int(slope)
     ca=int(ca)
     features=[age, gender, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak,slope,ca,thal]
-    print(features)
-    dict={};
-    # avg=0
-    # for model in all_models:
-    #     print("Model" , model)
-    #     res=model.predict([features])
-    #     print("res=",res[0],type(res))
-    #     if res[0]==1:
-    #         dict[model]="High Chance of Heart Disease"
-    #     else:
-    #         dict[model]="Low Chance of Heart Disease"
-    #     avg+=res
-    # print("average=",type(avg))
-    # accuracy=avg[0]/5
-    # accuracy=round(accuracy,2)
-    # for result in dict:
-    #     print("sfadgD", result)
-    # prediction = all_models[0].predict([features])
+    
+    dict_results = {}
     avg = 0
-for model in all_models:
-    print("Model:", model)
-    res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
-    print("res:", res)
-    if res == 1:
-        dict[model] = "High Chance of Heart Disease"
-    else:
-        dict[model] = "Low Chance of Heart Disease"
-    avg += res
 
-# Calculate accuracy
-accuracy = avg / len(all_models)  # Divide by the number of models, not a fixed number
-accuracy = round(accuracy * 100, 2)  # Convert accuracy to percentage
+    for model in all_models:
+        print("Model:", model)
+        res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
+        print("res:", res)
+        if res == 1:
+            dict_results[model] = "High Chance of Heart Disease"
+        else:
+            dict_results[model] = "Low Chance of Heart Disease"
+        avg += res
 
+    accuracy = avg / len(all_models)  # Divide by the number of models, not a fixed number
+    accuracy = round(accuracy * 100, 2)  # Convert accuracy to percentage
 
-    # if(prediction[0]):
-    #     return render_template('Hresult.html')
-    # else:
-    #     return render_template('Lresult.html')
-    # if(prediction2[0]):
-    #     output2 = "High Risk"
-    # else:
-    #     output2 = "Low Risk"
     personal_info=[name,email]
-    responses=[input_data,dict,personal_info,accuracy]
-    # Take the first value of prediction
-    # output = prediction[0]
-    # print("rESPONSES:",responses[0])
-    return render_template("result.html",result = responses)
+    responses=[input_data, dict_results, personal_info, accuracy]
+    
+    return render_template("result.html", result=responses)
+
     
 
 
