@@ -154,7 +154,7 @@ def predict():
         avg += res
 
     accuracy = avg / len(all_models)  # Divide by the number of models, not a fixed number
-    accuracy = round(accuracy * 100, 2)  # Convert accuracy to percentage
+    accuracy = min(accuracy * 100, 100)  # Convert accuracy to percentage
 
     personal_info=[name,email]
     responses=[input_data, dict_results, personal_info, accuracy]
