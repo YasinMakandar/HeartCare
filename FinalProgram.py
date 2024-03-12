@@ -274,23 +274,38 @@ dt_classifier.fit(X_train, y_train)
 # In[28]:
 
 
+# import pickle
+# all_models=[rf_classifier,logistic_model,dt_classifier,svc_classifier,knn_classifier]
+# #pickle.dump(logistic_model,open("models.pkl","wb"))
+# #pickle.dump(rf_classifier,open("models.pkl","wb"))
+# with open("models.pkl", 'wb') as files:
+#     pickle.dump(all_models, files)
+# print("Done")
+
+
+# # In[29]:
+
+
+# open_file = open("models.pkl", "rb")
+# loaded_list = pickle.load(open_file)
+# print(loaded_list)
+# open_file.close()
+# print("Done")
+
+
 import pickle
-all_models=[rf_classifier,logistic_model,dt_classifier,svc_classifier,knn_classifier]
-#pickle.dump(logistic_model,open("models.pkl","wb"))
-#pickle.dump(rf_classifier,open("models.pkl","wb"))
-with open("models.pkl", 'wb') as files:
-    pickle.dump(all_models, files)
-print("Done")
 
+all_models = [rf_classifier, logistic_model, dt_classifier, svc_classifier, knn_classifier]
 
-# In[29]:
+# Save all models to a pickle file
+with open("models.pkl", 'wb') as file:
+    pickle.dump(all_models, file)
+print("Models saved successfully.")
 
+# Load all models from the pickle file
+with open("models.pkl", "rb") as file:
+    loaded_models = pickle.load(file)
 
-open_file = open("models.pkl", "rb")
-loaded_list = pickle.load(open_file)
-print(loaded_list)
-open_file.close()
-print("Done")
-
+print("Models loaded successfully.")
 
 
