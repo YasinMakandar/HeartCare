@@ -144,8 +144,31 @@ def predict():
     #  print("The email address is '" + age + "|"+sex+"|"+cp+"|"+trestbps+"|"+chol+"|"+fbs+"|"+restecg)
     # Get the data from the POST request.
 
-    print("all models=",all_models)
+    # print("all models=",all_models)
     # print("Data recived", age, gender, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak,thal,0,0)
+    # Iterate over models and print specific information
+for model in all_models:
+    if isinstance(model, RandomForestClassifier):
+        print("Random Forest Classifier:")
+        print("Number of trees:", model.n_estimators)
+        # Add more information specific to RandomForestClassifier if needed
+    elif isinstance(model, LogisticRegression):
+        print("Logistic Regression:")
+        print("Coefficients:", model.coef_)
+        # Add more information specific to LogisticRegression if needed
+    elif isinstance(model, DecisionTreeClassifier):
+        print("Decision Tree Classifier:")
+        # Example: Print the maximum depth of the decision tree
+        print("Maximum depth:", model.tree_.max_depth)
+        # Add more information specific to DecisionTreeClassifier if needed
+    elif isinstance(model, SVC):
+        print("Support Vector Classifier:")
+        print("Kernel:", model.kernel)
+        # Add more information specific to SVC if needed
+    elif isinstance(model, KNeighborsClassifier):
+        print("K Nearest Neighbors Classifier:")
+        print("Number of neighbors:", model.n_neighbors)
+        # Add more information specific to KNeighborsClassifier if needed
     age=int(age)
     cp=int(cp)
     trestbps=int(trestbps)
