@@ -181,22 +181,37 @@ for model in all_models:
     features=[age, gender, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak,slope,ca,thal]
     print(features)
     dict={};
-    avg=0
-    for model in all_models:
-        print("Model" , model)
-        res=model.predict([features])
-        print("res=",res[0],type(res))
-        if res[0]==1:
-            dict[model]="High Chance of Heart Disease"
-        else:
-            dict[model]="Low Chance of Heart Disease"
-        avg+=res
-    print("average=",type(avg))
-    accuracy=avg[0]/5
-    accuracy=round(accuracy,2)
-    for result in dict:
-        print("sfadgD", result)
-    prediction = all_models[0].predict([features])
+    # avg=0
+    # for model in all_models:
+    #     print("Model" , model)
+    #     res=model.predict([features])
+    #     print("res=",res[0],type(res))
+    #     if res[0]==1:
+    #         dict[model]="High Chance of Heart Disease"
+    #     else:
+    #         dict[model]="Low Chance of Heart Disease"
+    #     avg+=res
+    # print("average=",type(avg))
+    # accuracy=avg[0]/5
+    # accuracy=round(accuracy,2)
+    # for result in dict:
+    #     print("sfadgD", result)
+    # prediction = all_models[0].predict([features])
+    avg = 0
+for model in all_models:
+    print("Model:", model)
+    res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
+    print("res:", res)
+    if res == 1:
+        dict[model] = "High Chance of Heart Disease"
+    else:
+        dict[model] = "Low Chance of Heart Disease"
+    avg += res
+
+# Calculate accuracy
+accuracy = avg / len(all_models)  # Divide by the number of models, not a fixed number
+accuracy = round(accuracy * 100, 2)  # Convert accuracy to percentage
+
 
     # if(prediction[0]):
     #     return render_template('Hresult.html')
