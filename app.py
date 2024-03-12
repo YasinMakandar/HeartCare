@@ -142,22 +142,39 @@ def predict():
     
     dict_results = {}
     avg = 0
-
     for model in all_models:
-        print("Model:", model)
-        res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
-        print("res:", res)
-        if res == 1:
-            dict_results[model] = "High Chance of Heart Disease"
-        else:
-            dict_results[model] = "Low Chance of Heart Disease"
-        avg += res
+    res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
+    avg += res
 
-    accuracy = avg / len(all_models)  # Divide by the number of models, not a fixed number
-    accuracy = min(accuracy * 100, 100)  # Convert accuracy to percentage
+    accuracy = avg / len(all_models)  # Divide by the number of models
+    accuracy = round(accuracy * 100, 2)  # Convert ac
+
+    
+    # avg_prediction = 0
+    # for model in all_models:
+    #     prediction = model.predict([features])[0]
+    #     avg_prediction += prediction
+    # avg_prediction /= len(all_models)
+    #  # Convert the average prediction to a percentage representing the likelihood of having heart disease
+    # heart_disease_likelihood = min(avg_prediction * 100, 100)  # Limit to 100%
+    
+    # avg = 0
+
+    # for model in all_models:
+    #     print("Model:", model)
+    #     res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
+    #     print("res:", res)
+    #     if res == 1:
+    #         dict_results[model] = "High Chance of Heart Disease"
+    #     else:
+    #         dict_results[model] = "Low Chance of Heart Disease"
+    #     avg += res
+
+    # accuracy = avg / len(all_models)  # Divide by the number of models, not a fixed number
+    # accuracy = min(accuracy * 100, 100)  # Convert accuracy to percentage
 
     personal_info=[name,email]
-    responses=[input_data, dict_results, personal_info, accuracy]
+    responses=[input_data, dict_results, personal_info, hear_disease_likelihood]
     
     return render_template("result.html", result=responses)
 
