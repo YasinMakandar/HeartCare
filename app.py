@@ -143,8 +143,8 @@ def predict():
     dict_results = {}
     avg = 0
     for model in all_models:
-    res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
-    avg += res
+        res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
+        avg += res
 
     accuracy = avg / len(all_models)  # Divide by the number of models
     accuracy = round(accuracy * 100, 2)  # Convert ac
