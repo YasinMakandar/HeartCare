@@ -141,13 +141,14 @@ def predict():
     features=[age, gender, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak,slope,ca,thal]
     
     dict_results = {}
-    avg = 0
+    avg_prediction = 0
     for model in all_models:
-        res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
-        avg += res
+        prediction = model.predict([features])[0]
+        avg_prediction += prediction
 
-    accuracy = avg / len(all_models)  # Divide by the number of models
-    accuracy = round(accuracy * 100, 2)  # Convert ac
+    avg_prediction /= len(all_models)  # Calculate the average prediction
+    avg_prediction = min(avg_prediction, 1)  # Limit to a maximum of 1 (representing 100%)
+    heart_disease_likelihood = avg_prediction * 100  # Convert to percentage
 
     
     # avg_prediction = 0
