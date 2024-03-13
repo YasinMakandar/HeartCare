@@ -64,7 +64,6 @@ def login():
 #     return redirect()
     
 @app.route('/api', methods=['GET', 'POST'])
-@app.route('/api', methods=['GET', 'POST'])
 def predict():
     name = request.form['name']
     email= request.form['email']
@@ -106,6 +105,8 @@ def predict():
     input_data["number of major vessels (0-3) colored by flourosopy"]=ca
     input_data["Thal Type"]=thal
 
+
+
     if fgender=="Male":
         gender=1
     else:
@@ -118,6 +119,18 @@ def predict():
     else:
         thal=2
 
+    # if cp=="Typical Angina":
+    #     cp=0
+    # elif cp=="Atypical Angina":
+    #     cp=1
+    # elif cp=="Non-Anginal":
+    #     cp=2
+    # else:
+    #     cp=3
+    # if fbs=="Yes":
+    #     fbs=1
+    # else:
+    #     fbs=0
     if restecg=="Normal":
         restecg=0
     elif restecg=="STT Abnormality":
@@ -128,7 +141,11 @@ def predict():
         exang=1
     else:
         exang=0
+    #  print("The email address is '" + age + "|"+sex+"|"+cp+"|"+trestbps+"|"+chol+"|"+fbs+"|"+restecg)
+    # Get the data from the POST request.
 
+    print("all models=",all_models)
+    # print("Data recived", age, gender, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak,thal,0,0)
     age=int(age)
     cp=int(cp)
     trestbps=int(trestbps)
@@ -139,68 +156,39 @@ def predict():
     slope=int(slope)
     ca=int(ca)
     features=[age, gender, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak,slope,ca,thal]
-
-    dict_results = {}
-    avg_prediction = 0
-
+    print(features)
+    dict={};
+    avg=0
     for model in all_models:
-      prediction = model.predict([features])[0]  # Extract single prediction
-      avg_prediction += prediction
+        print("Model" , model)
+        res=model.predict([features])
+        print("res=",res[0],type(res))
+        if res[0]==1:
+            dict[model]="High Chance of Heart Disease"
+        else:
+            dict[model]="Low Chance of Heart Disease"
+        avg+=res
+    print("average=",type(avg))
+    accuracy=avg[0]/5
+    accuracy=round(accuracy,2)
+    for result in dict:
+        print("sfadgD", result)
+    prediction = all_models[0].predict([features])
 
-  # Calculate individual model results with a threshold (adjust 0.5 as needed)
-    if prediction >= 0.5:
-        dict_results[model] = "High Chance of Heart Disease"
-    else:
-        dict_results[model] = "Low Chance of Heart Disease"
-
-# Calculate average prediction (between 0 and 1)
-    avg_prediction /= len(all_models)
-
-# Convert average prediction to percentage for heart disease likelihood
-    heart_disease_likelihood = min(avg_prediction * 100, 100)  # Limit to 100%
-
-
-    
-    # dict_results = {}
-    # avg_prediction = 0
-    # for model in all_models:
-    #     prediction = model.predict([features])[0]
-    #     avg_prediction += prediction
-
-    # avg_prediction /= len(all_models)  # Calculate the average prediction
-    # avg_prediction = min(avg_prediction, 1)  # Limit to a maximum of 1 (representing 100%)
-    # heart_disease_likelihood = min(avg_prediction * 100, 100)
-  # Convert to percentage
-
-    
-    # avg_prediction = 0
-    # for model in all_models:
-    #     prediction = model.predict([features])[0]
-    #     avg_prediction += prediction
-    # avg_prediction /= len(all_models)
-    #  # Convert the average prediction to a percentage representing the likelihood of having heart disease
-    # heart_disease_likelihood = min(avg_prediction * 100, 100)  # Limit to 100%
-    
-    # avg = 0
-
-    # for model in all_models:
-    #     print("Model:", model)
-    #     res = model.predict([features])[0]  # Extracting the single prediction from the numpy array
-    #     print("res:", res)
-    #     if res == 1:
-    #         dict_results[model] = "High Chance of Heart Disease"
-    #     else:
-    #         dict_results[model] = "Low Chance of Heart Disease"
-    #     avg += res
-
-    # accuracy = avg / len(all_models)  # Divide by the number of models, not a fixed number
-    # accuracy = min(accuracy * 100, 100)  # Convert accuracy to percentage
-
+    # if(prediction[0]):
+    #     return render_template('Hresult.html')
+    # else:
+    #     return render_template('Lresult.html')
+    # if(prediction2[0]):
+    #     output2 = "High Risk"
+    # else:
+    #     output2 = "Low Risk"
     personal_info=[name,email]
-    responses=[input_data, dict_results, personal_info, heart_disease_likelihood]
-    
-    return render_template("result.html", result=responses)
-
+    responses=[input_data,dict,personal_info,accuracy]
+    # Take the first value of prediction
+    # output = prediction[0]
+    # print("rESPONSES:",responses[0])
+    return render_template("result.html",result = responses)
     
 
 
