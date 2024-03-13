@@ -148,7 +148,8 @@ def predict():
 
     avg_prediction /= len(all_models)  # Calculate the average prediction
     avg_prediction = min(avg_prediction, 1)  # Limit to a maximum of 1 (representing 100%)
-    heart_disease_likelihood = avg_prediction * 100  # Convert to percentage
+    heart_disease_likelihood = min(avg_prediction * 100, 100)
+  # Convert to percentage
 
     
     # avg_prediction = 0
