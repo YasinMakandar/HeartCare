@@ -175,7 +175,7 @@ def predict():
     # accuracy = min(accuracy * 100, 100)  # Convert accuracy to percentage
 
     personal_info=[name,email]
-    responses=[input_data, dict_results, personal_info, hear_disease_likelihood]
+    responses=[input_data, dict_results, personal_info, heart_disease_likelihood]
     
     return render_template("result.html", result=responses)
 
