@@ -139,16 +139,37 @@ def predict():
     slope=int(slope)
     ca=int(ca)
     features=[age, gender, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak,slope,ca,thal]
-    
+
     dict_results = {}
     avg_prediction = 0
-    for model in all_models:
-        prediction = model.predict([features])[0]
-        avg_prediction += prediction
 
-    avg_prediction /= len(all_models)  # Calculate the average prediction
-    avg_prediction = min(avg_prediction, 1)  # Limit to a maximum of 1 (representing 100%)
-    heart_disease_likelihood = min(avg_prediction * 100, 100)
+    for model in all_models:
+      prediction = model.predict([features])[0]  # Extract single prediction
+      avg_prediction += prediction
+
+  # Calculate individual model results with a threshold (adjust 0.5 as needed)
+    if prediction >= 0.5:
+        dict_results[model] = "High Chance of Heart Disease"
+    else:
+        dict_results[model] = "Low Chance of Heart Disease"
+
+# Calculate average prediction (between 0 and 1)
+    avg_prediction /= len(all_models)
+
+# Convert average prediction to percentage for heart disease likelihood
+    heart_disease_likelihood = min(avg_prediction * 100, 100)  # Limit to 100%
+
+
+    
+    # dict_results = {}
+    # avg_prediction = 0
+    # for model in all_models:
+    #     prediction = model.predict([features])[0]
+    #     avg_prediction += prediction
+
+    # avg_prediction /= len(all_models)  # Calculate the average prediction
+    # avg_prediction = min(avg_prediction, 1)  # Limit to a maximum of 1 (representing 100%)
+    # heart_disease_likelihood = min(avg_prediction * 100, 100)
   # Convert to percentage
 
     
